@@ -55,6 +55,18 @@ class GradeController
         ]);
     }
 
+    public static function getS4ByOption( $idOption, $idStudent)
+    {
+        $model = new Grade(Flight::db());
+        $results = $model->getS4ByOption($idStudent, $idOption);
+
+        Flight::json([
+            "status" => "success",
+            "data" => $results,
+            "error" => null
+        ]);
+    }
+
     /**
      * Notes + moyenne annuelle
      */

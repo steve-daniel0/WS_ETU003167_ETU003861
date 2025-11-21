@@ -68,11 +68,103 @@ class Grade
             JOIN semester s ON sg.semester_id=s.id
             WHERE s.year = ?
                 AND stsem.student_id = ?
-            ORDER BY sj.name ASC
+            ORDER BY sj.name ASC 
+                AND ss.option_id DESC
         ";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$year, $idStudent]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Retourne la liste des options pour un semestre donné
+     */
+    public function getOptionsBySemester($semesterId)
+    {
+        $sql = "
+            SELECT DISTINCT 
+                so.id AS option_id,
+                so.label AS option_name
+            FROM semester_subject ss
+            LEFT JOIN student_option so ON so.id = ss.option_id
+            WHERE ss.semester_id = ?
+            AND ss.option_id IS NOT NULL
+            ORDER BY so.label ASC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$semesterId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Calcule la moyenne d’un étudiant sur un semestre et une option donnée
+     */
+    public function getAverage($semesterId, $optionId, $studentId)
+    {
+        $sql = "
+            SELECT 
+                sg.grade,
+                ss.credit
+            FROM student_grade sg
+            JOIN student_semester stsem ON sg.student_semester_id = stsem.id
+            JOIN semester_subject ss ON ss.subject_id = sg.subject_id 
+                AND ss.semester_id = sg.semester_id
+            WHERE sg.semester_id = ?
+            AND stsem.student_id = ?
+            AND (
+                    (? IS NULL AND ss.option_id IS NULL)
+                    OR
+                    (? IS NOT NULL AND ss.option_id = ?)
+                )
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            $semesterId,
+            $studentId,
+            $optionId,   // pour NULL case
+            $optionId,   // pour match case
+            $optionId
+        ]);
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($rows)) {
+            return null; // aucune note
+        }
+
+        $totalWeighted = 0;
+        $totalCredits = 0;
+
+        foreach ($rows as $r) {
+            $totalWeighted += $r['grade'] * $r['credit'];
+            $totalCredits  += $r['credit'];
+        }
+
+        return ($totalCredits > 0) ? round($totalWeighted / $totalCredits, 2) : null;
+    }
+
+    /**
+     * Retourne la mention correspondant à une moyenne
+     */
+    public function getMentionByAverage($average)
+    {
+        $sql = "
+            SELECT description
+            FROM grade_mention
+            WHERE ? BETWEEN note_min AND note_max
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$average]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result['description'] : null;
+    }
+
+
+
 }

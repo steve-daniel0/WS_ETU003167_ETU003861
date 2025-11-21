@@ -10,56 +10,56 @@ use App\Controllers\GradeController;
 use App\Controllers\StudentController;
 use App\Models\Helpers;
 
-// Clé secrète pour signer les tokens
-define('SECRET_KEY', 'MA_CLE_SECRETE_123');
+// // Clé secrète pour signer les tokens
+// define('SECRET_KEY', 'MA_CLE_SECRETE_123');
 
-// 👉 Vérification du token pour les routes protégées
-Flight::map('auth', function() {
-    $headers = apache_request_headers();
+// // 👉 Vérification du token pour les routes protégées
+// Flight::map('auth', function() {
+//     $headers = apache_request_headers();
 
-    if (!isset($headers['Authorization'])) {
-        Flight::json(["status" => "error", "message" => "Utilisateur non authentifié"], 401);
-        exit;
-    }
+//     if (!isset($headers['Authorization'])) {
+//         Flight::json(["status" => "error", "message" => "Utilisateur non authentifié"], 401);
+//         exit;
+//     }
 
-    $auth = $headers['Authorization']; // "Bearer XXXXXX"
-    $token = str_replace("Bearer ", "", $auth);
+//     $auth = $headers['Authorization']; // "Bearer XXXXXX"
+//     $token = str_replace("Bearer ", "", $auth);
 
-    // Vérifier si le token est valide
-    if ($token !== hash('sha256', SECRET_KEY)) {
-        Flight::json(["status" => "error", "message" => "Token invalide"], 401);
-        exit;
-    }
-});
+//     // Vérifier si le token est valide
+//     if ($token !== hash('sha256', SECRET_KEY)) {
+//         Flight::json(["status" => "error", "message" => "Token invalide"], 401);
+//         exit;
+//     }
+// });
 
-Flight::route('POST /login', function() {
-    $data = Flight::request()->data;
+// Flight::route('POST /login', function() {
+//     $data = Flight::request()->data;
 
-    $user = $data->username;
-    $pass = $data->password;
+//     $user = $data->username;
+//     $pass = $data->password;
 
-    // TEST : login simple (tu remplaceras par ta BD)
-    if ($user === 'admin' && $pass === '123') {
-        $token = hash('sha256', SECRET_KEY);
+//     // TEST : login simple (tu remplaceras par ta BD)
+//     if ($user === 'admin' && $pass === '123') {
+//         $token = hash('sha256', SECRET_KEY);
 
-        Flight::json([
-            "status" => "success",
-            "token" => $token,
-            "error" => null
-        ]);
-    } else {
-        Flight::json(["status" => "error", "data" => "", "error"=>"Login incorrect"], 401);
-    }
-});
+//         Flight::json([
+//             "status" => "success",
+//             "token" => $token,
+//             "error" => null
+//         ]);
+//     } else {
+//         Flight::json(["status" => "error", "data" => "", "error"=>"Login incorrect"], 401);
+//     }
+// });
 
-Flight::before('start', function (&$params, &$output) {
-    $public = ['/login']; // Routes accessibles sans token
-    $requested = Flight::request()->url;
+// Flight::before('start', function (&$params, &$output) {
+//     $public = ['/login']; // Routes accessibles sans token
+//     $requested = Flight::request()->url;
 
-    if (!in_array($requested, $public)) {
-        Flight::auth();
-    }
-});
+//     if (!in_array($requested, $public)) {
+//         Flight::auth();
+//     }
+// });
 
 
 // Erreurs globales

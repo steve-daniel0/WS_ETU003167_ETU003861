@@ -11,6 +11,3 @@ php -S localhost:8081
 
 # Test
 1- Tester avec un logiciel API Client comme Postman ou insomnia
-
-
-

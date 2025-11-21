@@ -6,9 +6,9 @@ export default {
       error: null
     };
   },
-
+  
   mounted() {
-    fetch('http://localhost:8085/note/etu')
+    fetch('http://localhost:8085/students')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -16,6 +16,7 @@ export default {
         return response.json();
       })
       .then(json => { 
+        console.log('JSON reçu:', json);
         this.students = json.data || [];
       })
       .catch(error => {
@@ -46,6 +47,7 @@ export default {
             <th>Moyenne S2</th>
             <th>Moyenne S3</th>
             <th colspan="3">Moyenne S4</th>
+            <th>Actions</th>
           </tr>
 
           <tr>
@@ -57,33 +59,31 @@ export default {
             <th>S4.1</th>
             <th>S4.2</th>
             <th>S4.3</th>
-
-            <th>Actions</th>
-
+            <th></th>
           </tr>
         </thead>
 
         <tbody>
 
           <!-- Un étudiant par ligne -->
-          <tr v-for="student in students" :key="student.ETU.id">
+          <tr v-for="student in students" :key="student.Student.id">
 
             <!-- Infos de l'étudiant -->
-            <td>{{ student.ETU.student_code }}</td>
-            <td>{{ student.ETU.name }} {{ student.ETU.first_name }}</td>
+            <td>{{ student.Student.student_code }}</td>
+            <td>{{ student.Student.name }} {{ student.Student.first_name }}</td>
 
             <!-- S1 S2 S3 -->
-            <td>{{ student.S1 }}</td>
-            <td>{{ student.S2 }}</td>
-            <td>{{ student.S3 }}</td>
+            <td>{{ student.s['1']?.average_common || '—' }}</td>
+            <td>{{ student.s['2']?.average_common || '—' }}</td>
+            <td>{{ student.s['3']?.average_common || '—' }}</td>
 
             <!-- S4 (3 sous-options) -->
-            <td>{{ student.S4[0]?.average }}</td>
-            <td>{{ student.S4[1]?.average }}</td>
-            <td>{{ student.S4[2]?.average }}</td>
+            <td>{{ student.s['4']?.options[0]?.average || '—' }}</td>
+            <td>{{ student.s['4']?.options[1]?.average || '—' }}</td>
+            <td>{{ student.s['4']?.options[2]?.average || '—' }}</td>
 
             <td>
-              <router-link :to="`/etudiant/${student.ETU.id}`">Voir détails</router-link>
+              <router-link :to="`/etudiant/${student.Student.id}`">Voir détails</router-link>
             </td>
 
           </tr>
@@ -168,10 +168,6 @@ table th {
   }
   
   table td::before {
-    /*
-    * aria-label has no advantage, it won't be read inside a table
-    content: attr(aria-label);
-    */
     content: attr(data-label);
     float: left;
     font-weight: bold;
@@ -183,7 +179,6 @@ table th {
   }
 }
 
-/* general styling */
 body {
   font-family: "Open Sans", sans-serif;
   line-height: 1.25;

@@ -12,11 +12,16 @@
       </div>
       <button type="submit">Se connecter</button>
     </form>
+
+    <!-- Affichage de l'erreur -->
     <p v-if="error" style="color:red">{{ error }}</p>
   </div>
 </template>
 
 <script>
+// Import du helper apiFetch pour centraliser le token
+import { apiFetch } from '../api.js'; // chemin vers ton helper
+
 export default {
   data() {
     return {
@@ -28,31 +33,45 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await fetch('http://localhost/myapp/login', {
+        // Appel au backend Flight PHP
+        const response = await apiFetch('/login', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             username: this.username,
             password: this.password
           })
         });
 
-        const data = await response.json();
+        // Stockage du token dans localStorage
+        localStorage.setItem('token', response.token);
 
-        if (response.ok) {
-          // Stocker le token dans localStorage pour les prochaines requêtes
-          localStorage.setItem('token', data.token);
-          this.error = '';
-          alert('Connexion réussie ! Token stocké.');
-          // Ici tu peux rediriger vers une route protégée
-        } else {
-          this.error = data.message;
-        }
+        // Réinitialiser l'erreur
+        this.error = '';
+
+        // Affichage d'un message ou redirection
+        alert('Connexion réussie ! Token stocké.');
+
+        // Exemple de redirection vers une page protégée
+        this.$router.push('/etudiants');
+
       } catch (err) {
-        console.error(err);
-        this.error = "Erreur serveur";
+        // Affichage du message d'erreur depuis le backend
+        this.error = err.message || 'Erreur lors de la connexion';
       }
     }
   }
 };
 </script>
+
+<style scoped>
+.login {
+  max-width: 400px;
+  margin: 50px auto;
+}
+form div {
+  margin-bottom: 15px;
+}
+button {
+  padding: 10px 20px;
+}
+</style>

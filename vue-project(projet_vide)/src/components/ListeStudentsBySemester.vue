@@ -1,4 +1,5 @@
 <script>
+import { apiFetch } from '../api.js';
 
 export default {
   props: ['id'],
@@ -11,7 +12,7 @@ export default {
   },
   mounted() {
     const semesterId = this.id || this.$route.params.id;
-    fetch(`http://localhost:8085/semester/${semesterId}/students`)
+    apiFetch(`/semester/${semesterId}/students`)
       .then(resp => {
         this.loading = false;
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);

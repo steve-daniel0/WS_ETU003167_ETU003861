@@ -1,4 +1,6 @@
 <script>
+import { apiFetch } from '../api.js';
+
 export default {
   props: ['id'],
   data() {
@@ -11,7 +13,7 @@ export default {
 
   mounted() {
     const studentId = this.id || this.$route.params.id;
-    fetch(`http://localhost:8085/etu/${studentId}/details`)
+    apiFetch(`/etu/${studentId}/details`)
       .then(response => {
         this.loading = false;
         if (!response.ok) {

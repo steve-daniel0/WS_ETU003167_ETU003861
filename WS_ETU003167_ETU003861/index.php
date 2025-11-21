@@ -110,6 +110,10 @@ Flight::route('GET /grade/S/@id_semester/@id_student', [
     GradeController::class, 'getBySemester'
 ]);
 
+Flight::route('GET /grade/S4/@id_option/@id_student', [
+    GradeController::class, 'getS4ByOption'
+]);
+
 Flight::route('GET /grade/L/@year/@id_student', [
     GradeController::class, 'getByYear'
 ]);

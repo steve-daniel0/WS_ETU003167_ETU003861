@@ -165,6 +165,57 @@ class Grade
         return $result ? $result['description'] : null;
     }
 
+    /**
+     * Retourne les notes, moyenne et mention pour un étudiant pour le semestre 4 et une option donnée
+     */
+    public function getS4ByOption($studentId, $optionId)
+    {
+        $semesterId = 4;
+
+        // Récupération des notes pour ce semestre et cette option
+        $sql = "
+            SELECT 
+                sj.name AS subject_name,
+                sg.grade,
+                ss.credit
+            FROM student_semester stsem
+            JOIN semester_subject ss ON ss.semester_id = ? 
+                AND ss.option_id = ?
+                AND ss.subject_id IN (
+                    SELECT subject_id FROM student_grade WHERE student_semester_id = stsem.id
+                )
+            JOIN subject sj ON sj.id = ss.subject_id
+            JOIN student_grade sg ON sg.student_semester_id = stsem.id 
+                AND sg.subject_id = ss.subject_id
+            WHERE stsem.student_id = ?
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$semesterId, $optionId, $studentId]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($rows)) {
+            return null; // pas de notes
+        }
+
+        // Calcul de la moyenne pondérée
+        $totalWeighted = 0;
+        $totalCredits = 0;
+        foreach ($rows as $r) {
+            $totalWeighted += $r['grade'] * $r['credit'];
+            $totalCredits  += $r['credit'];
+        }
+        $average = ($totalCredits > 0) ? round($totalWeighted / $totalCredits, 2) : null;
+
+        // Mention correspondante
+        $mention = $average !== null ? $this->getMentionByAverage($average) : null;
+
+        return [
+            "grades"  => $rows,
+            "average" => $average,
+            "mention" => $mention
+        ];
+    }
 
 
 }

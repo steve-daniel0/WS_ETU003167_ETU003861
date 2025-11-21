@@ -124,7 +124,7 @@ class GradeController
             "data" => [
                 "academic_year"    => $year,
                 "student_id"       => $idStudent,
-                "grades"           => $results,
+                // "grades"           => $results,
                 "semesters"        => $semesters,
                 "annual_average"   => $annualAverage,
                 "annual_mention"   => $annualMention

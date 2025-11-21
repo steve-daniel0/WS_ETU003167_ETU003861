@@ -89,26 +89,12 @@ Flight::map('error', function (Exception $ex) {
     }
 });
 
-// Ajout des headers CORS globaux
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+Flight::route('GET /students/@id_student', [
+    StudentController::class, 'getSemesterAveragesByStudent'
+]);
 
-// Répondre immédiatement aux requêtes OPTIONS (préflight)
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { 
-    exit(0);
-} 
-
-// Alias en minuscule pour compatibilité avec les requêtes frontend
-Flight::route('GET /student', [StudentController::class, 'getAll']);
-
-// Routes pour les semestres
-Flight::route('GET /Semester', [SemesterController::class, 'getAll']);
-Flight::route('GET /semester', [SemesterController::class, 'getAll']);
-
-// Liste des étudiants pour un semestre (par id de semester)
-Flight::route('GET /Semester/@id/students', [SemesterController::class, 'getStudents']);
-Flight::route('GET /semester/@id/students', [SemesterController::class, 'getStudents']);
+// Routes REST
+Flight::route('GET /students', [StudentController::class, 'getAllWithAverages']);
 
 Flight::route('GET /grade/S/@id_semester/@id_student', [
     GradeController::class, 'getBySemester'
@@ -125,5 +111,6 @@ Flight::route('GET /note/etu', [
 Flight::route('GET /etu/@id/details', [
     GradeController::class, 'getEtuDetails'
 ]);
+
 
 Flight::start();

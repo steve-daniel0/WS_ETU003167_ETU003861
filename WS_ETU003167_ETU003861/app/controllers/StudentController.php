@@ -14,6 +14,7 @@ class StudentController {
             "data" => $model->getAll(),
             "error" => null
         ]);
+
     }
 
     /**

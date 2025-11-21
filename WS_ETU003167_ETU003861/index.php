@@ -8,6 +8,7 @@ require __DIR__ . '/config/database.php';
 
 use App\Controllers\GradeController;
 use App\Controllers\StudentController;
+use App\Controllers\SemesterController;
 use App\Models\Helpers;
 
 // // Clé secrète pour signer les tokens

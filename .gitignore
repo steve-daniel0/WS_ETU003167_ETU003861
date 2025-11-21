@@ -1,0 +1,118 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+.DS_Store
+dist
+dist-ssr
+coverage
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.tsbuildinfo
+
+.eslintcache
+
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+
+# Vitest
+__screenshots__/
+
+# ============================================
+#  PHP / Composer
+# ============================================
+vendor/
+composer.lock
+composer.phar
+
+# ============================================
+#  Environnements / Config sensibles
+# ============================================
+/config/database.local.php
+/.env
+/.env.*
+.env.php
+
+# ============================================
+#  Cache / Logs / Temp
+# ============================================
+/tmp/
+/temp/
+/cache/
+/logs/
+/*.log
+
+# FlightPHP generated cache (if any)
+flight/cache/
+
+# ============================================
+#  OS
+# ============================================
+Thumbs.db
+.DS_Store
+
+# ============================================
+#  IDEs
+#  VS Code
+.vscode/
+#  PhpStorm / JetBrains
+.idea/
+
+# ============================================
+#  Testing
+# ============================================
+/coverage/
+/.phpunit.cache/
+/tests/_output/
+
+# PHPUnit watcher files
+phpunit-watcher.cache
+
+# ============================================
+#  Docker
+# ============================================
+/docker/*.log
+/docker-compose.override.yml
+/data/
+mysql-init/*.log
+
+# Avoid MySQL container runtime data
+mysql/
+mysql-data/
+*.sql~  # backup temp files
+
+# ============================================
+#  Node (if front used)
+node_modules/
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+
+# ============================================
+#  Backup / temp editor files
+*.bak
+*.tmp
+*~
+*.swp
+*.swo
+
+# ============================================
+#  Generated backups
+index copy.php

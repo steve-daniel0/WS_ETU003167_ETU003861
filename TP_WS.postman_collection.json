@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "2d8df7e0-04f8-4fcb-9e95-3eb3ba2e00ef",
+		"name": "TP_WS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49506095",
+		"_collection_link": "https://steve-daniel0-3398344.postman.co/workspace/stevveeee's-Workspace~b572a934-8f1e-4e60-8040-9a2cf99fc081/collection/49506095-2d8df7e0-04f8-4fcb-9e95-3eb3ba2e00ef?action=share&source=collection_link&creator=49506095"
+	},
+	"item": [
+		{
+			"name": "LISTE_ETUDIANT",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8085/student",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"student"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NOTE_ETU",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8085/grade/L/{{year}}/{{studentId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8085",
+					"path": [
+						"grade",
+						"L",
+						"{{year}}",
+						"{{studentId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "idSemester",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "studentId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "year",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

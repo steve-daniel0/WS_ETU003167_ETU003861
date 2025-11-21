@@ -92,7 +92,15 @@ export default {
           </div>
         </div>
       </div>
+      <p>        
+        <router-link :to="`/grade/L/1/${student.ETU.id}`">Note L1</router-link>
+      </p>
+      <p>        
+        <router-link :to="`/grade/L/2/${student.ETU.id}`">Note L2</router-link>
+      </p>
+
     </div>
+
 
     <div v-else>
       Aucun étudiant trouvé

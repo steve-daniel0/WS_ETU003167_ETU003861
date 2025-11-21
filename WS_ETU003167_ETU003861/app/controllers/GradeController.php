@@ -43,8 +43,8 @@ class GradeController
         Flight::json([
             "status" => "success",
             "data" => [
+                "student"          => $studentModel->findByCode($idStudent),
                 "semester_id"      => $idSemester,
-                "student_id"       => $idStudent,
                 "count"            => count($results),
                 "grades"           => $results,
                 "average_common"   => $avgCommon,
@@ -58,11 +58,15 @@ class GradeController
     public static function getS4ByOption( $idOption, $idStudent)
     {
         $model = new Grade(Flight::db());
+        $studentModel = new Student(Flight::db());
         $results = $model->getS4ByOption($idStudent, $idOption);
 
         Flight::json([
             "status" => "success",
-            "data" => $results,
+            "data" => [
+                "student" => $studentModel->findByCode($idStudent),
+                "grades"=>$results
+            ],
             "error" => null
         ]);
     }
@@ -134,6 +138,7 @@ class GradeController
         Flight::json([
             "status" => "success",
             "data" => [
+                "student"          => $studentModel->findByCode($idStudent),
                 "academic_year"    => $year,
                 "student_id"       => $idStudent,
                 // "grades"           => $results,

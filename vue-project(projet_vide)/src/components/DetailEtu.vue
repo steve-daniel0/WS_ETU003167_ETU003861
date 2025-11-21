@@ -22,6 +22,7 @@ export default {
         return response.json();
       })
       .then(json => { 
+        console.log('JSON reçu:', json);
         this.student = json.data || null;
       })
       .catch(error => {
@@ -41,7 +42,7 @@ export default {
 
     <div v-else-if="error" style="color: red;">Erreur : {{ error }}</div>
 
-    <div v-else-if="student && student.ETU">
+    <div v-else-if="student && student.Student">
       <div class="student-profile py-4">
         <div class="container">
           <div class="row">
@@ -49,8 +50,8 @@ export default {
               <div class="card shadow-sm">
                 <div class="card-header bg-transparent text-center">
                   <img class="profile_img" src="https://placeimg.com/640/480/arch/any" alt="">
-                  <h3>{{ student.ETU.name }} {{ student.ETU.first_name }}</h3>
-                  <div>{{ student.ETU.student_code }} — né(e) le {{ student.ETU.birth }}</div>
+                  <h3>{{ student.Student.name }} {{ student.Student.first_name }}</h3>
+                  <div>{{ student.Student.student_code }} — né(e) le {{ student.Student.birth }}</div>
                 </div>
               </div>
             </div>
@@ -68,23 +69,27 @@ export default {
                     </tr>
                     <tr>
                       <td>S1</td>
-                      <td>{{ student.S1 !== undefined ? student.S1 : '—' }}</td>
+                      <td>{{ student.s['1']?.average_common || '—' }}</td>
                     </tr>
                     <tr>
                       <td>S2</td>
-                      <td>{{ student.S2 !== undefined ? student.S2 : '—' }}</td>
+                      <td>{{ student.s['2']?.average_common || '—' }}</td>
                     </tr>
                     <tr>
                       <td>S3</td>
-                      <td>{{ student.S3 !== undefined ? student.S3 : '—' }}</td>
+                      <td>{{ student.s['3']?.average_common || '—' }}</td>
+                    </tr>
+                    <tr>
+                      <td>S4 (tronc commun)</td>
+                      <td>{{ student.s['4']?.average_common || '—' }}</td>
                     </tr>
                   </table>
 
-                  <div v-if="student.S4 && Array.isArray(student.S4)">
+                  <div v-if="student.s['4']?.options && student.s['4'].options.length > 0">
                     <h4>Options pour S4</h4>
                     <ul>
-                      <li v-for="opt in student.S4" :key="opt.option_id">
-                        <b>{{ opt.option_name }}</b> — Moyenne : {{ opt.average }} 
+                      <li v-for="opt in student.s['4'].options" :key="opt.option_id">
+                        <b>{{ opt.option_name }}</b> — Moyenne : {{ opt.average }}
                       </li>
                     </ul>
                   </div>
@@ -95,14 +100,13 @@ export default {
         </div>
       </div>
       <p>        
-        <router-link :to="`/grade/L/1/${student.ETU.id}`">Note L1</router-link>
+        <router-link :to="`/grade/L/1/${student.Student.id}`">Note L1</router-link>
       </p>
       <p>        
-        <router-link :to="`/grade/L/2/${student.ETU.id}`">Note L2</router-link>
+        <router-link :to="`/grade/L/2/${student.Student.id}`">Note L2</router-link>
       </p>
 
     </div>
-
 
     <div v-else>
       Aucun étudiant trouvé

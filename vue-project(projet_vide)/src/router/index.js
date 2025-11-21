@@ -5,6 +5,7 @@ import ListeEtu from '../components/ListeEtu.vue'
 import DetailEtu from '../components/DetailEtu.vue'
 import GradesByYear from '../components/GradesByYear.vue'
 import Login from '../components/Login.vue'
+import NoteSemester from '@/components/NoteSemester.vue'
 
 const routes = [
   // { path: '/', name: 'Semesters', component: ListeSemestre },
@@ -13,6 +14,8 @@ const routes = [
   { path: '/grade/L/:year/:id_student', name: 'GradesByYear', component: GradesByYear, props: true },
   { path: '/etudiants', name: 'ListeEtu', component: ListeEtu },
   { path: '/', name: 'Login', component: Login },
+  { path: '/notes/semester/:id_semester/student/:id_student', name: 'NoteSemester', component: NoteSemester, props: true },
+  { path: '/', name: 'ListeEtu', component: ListeEtu },
 ]
 
 const router = createRouter({

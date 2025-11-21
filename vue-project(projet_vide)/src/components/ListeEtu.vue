@@ -6,7 +6,7 @@ export default {
       error: null
     };
   },
-  
+
   mounted() {
     fetch('http://localhost:8085/students')
       .then(response => {
@@ -56,9 +56,9 @@ export default {
             <th></th>
             <th></th>
             <th></th>
-            <th>S4.1</th>
-            <th>S4.2</th>
-            <th>S4.3</th>
+            <th>db</th>
+            <th>dev</th>
+            <th>web</th>
             <th></th>
           </tr>
         </thead>

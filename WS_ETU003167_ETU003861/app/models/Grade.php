@@ -56,6 +56,7 @@ class Grade
                 ss.credit,
                 so.label AS option_name,
                 sg.grade,
+                ss.semester_id,
                 es.date AS exam_date
             FROM student_semester stsem
             JOIN semester_year sy ON stsem.semester_year_id = sy.id
@@ -69,7 +70,6 @@ class Grade
             WHERE s.year = ?
                 AND stsem.student_id = ?
             ORDER BY sj.name ASC 
-                AND ss.option_id DESC
         ";
 
         $stmt = $this->db->prepare($sql);

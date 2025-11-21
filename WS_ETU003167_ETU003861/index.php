@@ -62,7 +62,6 @@ use App\Models\Helpers;
 //     }
 // });
 
-
 // Erreurs globales
 Flight::map('notFound', function () {
     Helpers::jsonError('NOT_FOUND', 'Route inconnue', 404);
@@ -105,6 +104,13 @@ Flight::route('GET /grade/L/@year/@id_student', [
     GradeController::class, 'getByYear'
 ]);
 
+Flight::route('GET /note/etu', [
+    GradeController::class, 'getAllNoteEtu'
+]);
+
+Flight::route('GET /etu/@id/details', [
+    GradeController::class, 'getEtuDetails'
+]);
 
 
 Flight::start();

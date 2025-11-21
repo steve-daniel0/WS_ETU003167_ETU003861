@@ -4,20 +4,18 @@ export default {
     return {
       students: [],
       error: null
-    }    
+    };
   },
 
   mounted() {
-    fetch('http://localhost:8085/student')
+    fetch('http://localhost:8085/note/etu')
       .then(response => {
-        console.log('Response status:', response.status);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
       })
       .then(json => { 
-        console.log('JSON reçu:', json);
         this.students = json.data || [];
       })
       .catch(error => {
@@ -30,27 +28,164 @@ export default {
 
 <template>
   <div>
-    <h1>Liste des étudiants</h1>
 
     <div v-if="error" style="color: red;">
       Erreur : {{ error }}
     </div>
 
     <div v-else-if="students.length > 0">
-      <ul>
-        <li v-for="student in students" :key="student.id">
-          <div><b>ID :</b> {{ student.id }}</div>
-          <div><b>Nom :</b> {{ student.name }}</div>
-          <div><b>Prénom :</b> {{ student.first_name }}</div>
-          <div><b>Date de naissance :</b> {{ student.birth }}</div>
-          <div><b>Code étudiant :</b> {{ student.student_code }}</div>
-          <hr />
-        </li>
-      </ul>
+
+      <table>
+        <caption>Liste des étudiants</caption>
+
+        <thead>
+          <tr>
+            <th>ETU</th>
+            <th>Nom</th>
+            <th>Moyenne S1</th>
+            <th>Moyenne S2</th>
+            <th>Moyenne S3</th>
+            <th colspan="3">Moyenne S4</th>
+          </tr>
+
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>S4.1</th>
+            <th>S4.2</th>
+            <th>S4.3</th>
+
+            <th>Actions</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <!-- Un étudiant par ligne -->
+          <tr v-for="student in students" :key="student.ETU.id">
+
+            <!-- Infos de l'étudiant -->
+            <td>{{ student.ETU.student_code }}</td>
+            <td>{{ student.ETU.name }} {{ student.ETU.first_name }}</td>
+
+            <!-- S1 S2 S3 -->
+            <td>{{ student.S1 }}</td>
+            <td>{{ student.S2 }}</td>
+            <td>{{ student.S3 }}</td>
+
+            <!-- S4 (3 sous-options) -->
+            <td>{{ student.S4[0]?.average }}</td>
+            <td>{{ student.S4[1]?.average }}</td>
+            <td>{{ student.S4[2]?.average }}</td>
+
+            <td>
+              <router-link :to="`/etudiant/${student.ETU.id}`">Voir détails</router-link>
+            </td>
+
+          </tr>
+
+        </tbody>
+      </table>
+
     </div>
 
     <div v-else>
       Aucun étudiant dans la base
     </div>
+
   </div>
 </template>
+
+<style>
+
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+/* general styling */
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.25;
+}
+</style>

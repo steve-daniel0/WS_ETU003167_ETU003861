@@ -17,13 +17,44 @@ class GradeController
 
         $results = $model->getGradesBySemester($idSemester, $idStudent);
 
+<<<<<<< Updated upstream
+=======
+        // Options existantes
+        $options = $model->getOptionsBySemester($idSemester);
+
+        // Moyenne commune
+        $avgCommon = $model->getAverage($idSemester, null, $idStudent);
+        $mentionCommon = $avgCommon !== null ? $model->getMentionByAverage($avgCommon) : null;
+
+        // Moyenne par option
+        $optionsResult = [];
+        foreach ($options as $opt) {
+            $avg = $model->getAverage($idSemester, $opt["option_id"], $idStudent);
+            $mention = $avg !== null ? $model->getMentionByAverage($avg) : null;
+
+            $optionsResult[] = [
+                "option_id" => $opt["option_id"],
+                "option_name" => $opt["option_name"],
+                "average" => $avg,
+                "mention" => $mention
+            ];
+        }
+
+>>>>>>> Stashed changes
         Flight::json([
             "status" => "success",
             "data" => [
                 "semester_id" => $idSemester,
                 "student_id" => $idStudent,
                 "count" => count($results),
+<<<<<<< Updated upstream
                 "grades" => $results
+=======
+                "grades" => $results,
+                "average_common" => $avgCommon,
+                "mention_common" => $mentionCommon,
+                "options" => $optionsResult
+>>>>>>> Stashed changes
             ],
             "error" => null
         ]);
@@ -40,13 +71,141 @@ class GradeController
         Flight::json([
             "status" => "success",
             "data" => [
+<<<<<<< Updated upstream
                  "academic_year" => $year,
                 "student_id" => $idStudent,
                 "count" => count($results),
                 "grades" => $results
+=======
+                "academic_year" => $year,
+                "student_id" => $idStudent,
+                "grades" => $results,
+                "semesters" => $semesters,
+                "annual_average" => $annualAverage,
+                "annual_mention" => $annualMention
+>>>>>>> Stashed changes
             ],
             "error" => null
         ]);
+    }
+
+    public static function getAllNoteEtu()
+    {
+        $results = [
+            [
+                "ETU" => [
+                    "id" => 2,
+                    "name" => "Johnson",
+                    "first_name" => "Emma",
+                    "birth" => "2001-08-20",
+                    "student_code" => "ETU002"
+                ],
+                "S1" => 18,
+                "S2" => 17,
+                "S3" => 16,
+                "S4" => [
+                    [
+                        "option_id" => 3,
+                        "option_name" => "db",
+                        "average" => 16,
+                        "mention" => "Bien"
+                    ],
+                    [
+                        "option_id" => 1,
+                        "option_name" => "dev",
+                        "average" => 15.9,
+                        "mention" => "Bien"
+                    ],
+                    [
+                        "option_id" => 2,
+                        "option_name" => "web",
+                        "average" => 14,
+                        "mention" => "Assez bien"
+                    ]
+                ]
+            ],
+            [
+                "ETU" => [
+                    "id" => 3,
+                    "name" => "Smith",
+                    "first_name" => "Lucas",
+                    "birth" => "2002-03-15",
+                    "student_code" => "ETU003"
+                ],
+                "S1" => 12,
+                "S2" => 14,
+                "S3" => 13,
+                "S4" => [
+                    [
+                        "option_id" => 3,
+                        "option_name" => "db",
+                        "average" => 11,
+                        "mention" => "Passable"
+                    ],
+                    [
+                        "option_id" => 1,
+                        "option_name" => "dev",
+                        "average" => 12.5,
+                        "mention" => "Assez bien"
+                    ],
+                    [
+                        "option_id" => 2,
+                        "option_name" => "web",
+                        "average" => 13.7,
+                        "mention" => "Assez bien"
+                    ]
+                ]
+            ]
+        ];
+
+        Flight::json([
+            "status" => "success",
+            "data" => $results,
+            "error" => null
+        ]);
+    }
+
+    public static function getEtuDetails($id)
+    { 
+
+        $results = [
+            "ETU" => [
+                "id" => 2,
+                "name" => "Johnson",
+                "first_name" => "Emma",
+                "birth" => "2001-08-20",
+                "student_code" => "ETU002"
+            ],
+            "S1" => 18,
+            "S2" => 17,
+            "S3" => 16,
+            "S4" => [
+                [
+                    "option_id" => 3,
+                    "option_name" => "db",
+                    "average" => 16,
+                    "mention" => "Bien"
+                ],
+                [
+                    "option_id" => 1,
+                    "option_name" => "dev",
+                    "average" => 15.9,
+                    "mention" => "Bien"
+                ],
+                [
+                    "option_id" => 2,
+                    "option_name" => "web",
+                    "average" => 14,
+                    "mention" => "Assez bien"
+                ]
+            ]
+        ];
+
+        Flight::json([
+            "status" => "success",
+            "data" => $results,
+            "error" => null
+        ]); 
     }
 
 }

@@ -8,6 +8,7 @@ require __DIR__ . '/config/database.php';
 
 use App\Controllers\GradeController;
 use App\Controllers\StudentController;
+use App\Controllers\SemesterController;
 use App\Models\Helpers;
 
 // // Clé secrète pour signer les tokens
@@ -89,8 +90,26 @@ Flight::map('error', function (Exception $ex) {
     }
 });
 
-// Routes REST
-Flight::route('GET /Student', [StudentController::class, 'getAll']);
+// Ajout des headers CORS globaux
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+// Répondre immédiatement aux requêtes OPTIONS (préflight)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { 
+    exit(0);
+} 
+
+// Alias en minuscule pour compatibilité avec les requêtes frontend
+Flight::route('GET /student', [StudentController::class, 'getAll']);
+
+// Routes pour les semestres
+Flight::route('GET /Semester', [SemesterController::class, 'getAll']);
+Flight::route('GET /semester', [SemesterController::class, 'getAll']);
+
+// Liste des étudiants pour un semestre (par id de semester)
+Flight::route('GET /Semester/@id/students', [SemesterController::class, 'getStudents']);
+Flight::route('GET /semester/@id/students', [SemesterController::class, 'getStudents']);
 
 Flight::route('GET /grade/S/@id_semester/@id_student', [
     GradeController::class, 'getBySemester'

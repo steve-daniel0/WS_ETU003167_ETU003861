@@ -1,0 +1,35 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testws
+      MYSQL_USER: salohy
+      MYSQL_PASSWORD: salohy
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+
+  php:
+    build : .
+    container_name: flight-php
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "8085:80"
+    environment:
+      DB_HOST: mysql
+      DB_NAME: testws
+      DB_USER: salohy
+      DB_PASS: salohy
+    volumes:
+      - ./:/var/www/html
+
+volumes:
+  mysql_data:

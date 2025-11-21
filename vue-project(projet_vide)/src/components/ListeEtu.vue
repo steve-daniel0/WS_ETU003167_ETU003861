@@ -72,15 +72,51 @@ export default {
             <td>{{ student.Student.student_code }}</td>
             <td>{{ student.Student.name }} {{ student.Student.first_name }}</td>
 
-            <!-- S1 S2 S3 -->
-            <td>{{ student.s['1']?.average_common || '—' }}</td>
-            <td>{{ student.s['2']?.average_common || '—' }}</td>
-            <td>{{ student.s['3']?.average_common || '—' }}</td>
+            <!-- S1 S2 S3 with links to NoteSemester -->
+            <td>
+              <span>{{ student.s['1']?.average_common || '—' }}</span>
+              <div>
+                <router-link :to="`/notes/semester/1/student/${student.Student.id}`">Voir S1</router-link>
+              </div>
+            </td>
+            <td>
+              <span>{{ student.s['2']?.average_common || '—' }}</span>
+              <div>
+                <router-link :to="`/notes/semester/2/student/${student.Student.id}`">Voir S2</router-link>
+              </div>
+            </td>
+            <td>
+              <span>{{ student.s['3']?.average_common || '—' }}</span>
+              <div>
+                <router-link :to="`/notes/semester/3/student/${student.Student.id}`">Voir S3</router-link>
+              </div>
+            </td>
 
-            <!-- S4 (3 sous-options) -->
-            <td>{{ student.s['4']?.options[0]?.average || '—' }}</td>
-            <td>{{ student.s['4']?.options[1]?.average || '—' }}</td>
-            <td>{{ student.s['4']?.options[2]?.average || '—' }}</td>
+            <!-- S4 (3 sous-options) with links to NoteS4 -->
+            <td>
+              <span>{{ student.s['4']?.options[0]?.average || '—' }}</span>
+              <div v-if="student.s['4']?.options[0]">
+                <router-link :to="`/grade/S4/${student.s['4'].options[0].option_id}/${student.Student.id}`">
+                  Voir S4 ({{ student.s['4'].options[0].option_name }})
+                </router-link>
+              </div>
+            </td>
+            <td>
+              <span>{{ student.s['4']?.options[1]?.average || '—' }}</span>
+              <div v-if="student.s['4']?.options[1]">
+                <router-link :to="`/grade/S4/${student.s['4'].options[1].option_id}/${student.Student.id}`">
+                  Voir S4 ({{ student.s['4'].options[1].option_name }})
+                </router-link>
+              </div>
+            </td>
+            <td>
+              <span>{{ student.s['4']?.options[2]?.average || '—' }}</span>
+              <div v-if="student.s['4']?.options[2]">
+                <router-link :to="`/grade/S4/${student.s['4'].options[2].option_id}/${student.Student.id}`">
+                  Voir S4 ({{ student.s['4'].options[2].option_name }})
+                </router-link>
+              </div>
+            </td>
 
             <td>
               <router-link :to="`/etudiant/${student.Student.id}`">Voir détails</router-link>

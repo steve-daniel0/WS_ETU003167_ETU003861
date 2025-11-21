@@ -5,6 +5,7 @@ import ListeEtu from '../components/ListeEtu.vue'
 import DetailEtu from '../components/DetailEtu.vue'
 import GradesByYear from '../components/GradesByYear.vue'
 import NoteSemester from '@/components/NoteSemester.vue'
+import NoteS4 from '../components/NoteS4.vue'
 
 const routes = [
   // { path: '/', name: 'Semesters', component: ListeSemestre },
@@ -12,6 +13,7 @@ const routes = [
   { path: '/etudiant/:id', name: 'DetailEtu', component: DetailEtu, props: true },
   { path: '/grade/L/:year/:id_student', name: 'GradesByYear', component: GradesByYear, props: true },
   { path: '/notes/semester/:id_semester/student/:id_student', name: 'NoteSemester', component: NoteSemester, props: true },
+  { path: '/grade/S4/:id_option/:id_student', name: 'NoteS4', component: NoteS4, props: true },
   { path: '/', name: 'ListeEtu', component: ListeEtu },
 ]
 

@@ -126,5 +126,4 @@ Flight::route('GET /etu/@id/details', [
     GradeController::class, 'getEtuDetails'
 ]);
 
-
 Flight::start();

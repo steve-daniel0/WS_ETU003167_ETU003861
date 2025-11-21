@@ -17,44 +17,13 @@ class GradeController
 
         $results = $model->getGradesBySemester($idSemester, $idStudent);
 
-<<<<<<< Updated upstream
-=======
-        // Options existantes
-        $options = $model->getOptionsBySemester($idSemester);
-
-        // Moyenne commune
-        $avgCommon = $model->getAverage($idSemester, null, $idStudent);
-        $mentionCommon = $avgCommon !== null ? $model->getMentionByAverage($avgCommon) : null;
-
-        // Moyenne par option
-        $optionsResult = [];
-        foreach ($options as $opt) {
-            $avg = $model->getAverage($idSemester, $opt["option_id"], $idStudent);
-            $mention = $avg !== null ? $model->getMentionByAverage($avg) : null;
-
-            $optionsResult[] = [
-                "option_id" => $opt["option_id"],
-                "option_name" => $opt["option_name"],
-                "average" => $avg,
-                "mention" => $mention
-            ];
-        }
-
->>>>>>> Stashed changes
         Flight::json([
             "status" => "success",
             "data" => [
                 "semester_id" => $idSemester,
                 "student_id" => $idStudent,
                 "count" => count($results),
-<<<<<<< Updated upstream
                 "grades" => $results
-=======
-                "grades" => $results,
-                "average_common" => $avgCommon,
-                "mention_common" => $mentionCommon,
-                "options" => $optionsResult
->>>>>>> Stashed changes
             ],
             "error" => null
         ]);
@@ -71,19 +40,10 @@ class GradeController
         Flight::json([
             "status" => "success",
             "data" => [
-<<<<<<< Updated upstream
                  "academic_year" => $year,
                 "student_id" => $idStudent,
                 "count" => count($results),
                 "grades" => $results
-=======
-                "academic_year" => $year,
-                "student_id" => $idStudent,
-                "grades" => $results,
-                "semesters" => $semesters,
-                "annual_average" => $annualAverage,
-                "annual_mention" => $annualMention
->>>>>>> Stashed changes
             ],
             "error" => null
         ]);

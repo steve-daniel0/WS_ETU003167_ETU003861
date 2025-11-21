@@ -11,8 +11,6 @@ use App\Controllers\StudentController;
 use App\Controllers\SemesterController;
 use App\Models\Helpers;
 
-<<<<<<< Updated upstream
-=======
 // // Clé secrète pour signer les tokens
 // define('SECRET_KEY', 'MA_CLE_SECRETE_123');
 
@@ -64,7 +62,6 @@ use App\Models\Helpers;
 //     }
 // });
 
->>>>>>> Stashed changes
 // Erreurs globales
 Flight::map('notFound', function () {
     Helpers::jsonError('NOT_FOUND', 'Route inconnue', 404);
